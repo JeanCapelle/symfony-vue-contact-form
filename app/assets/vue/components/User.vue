@@ -1,14 +1,14 @@
 <template>
     <div class="card w-100 mt-2">
         <div class="card-body">
-            {{ message }} 
+            {{ message }}
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        name: 'post',
-        props: ['message', 'created', 'checked'],
+        name: 'user',
+        props: ['message'],
     }
 </script>

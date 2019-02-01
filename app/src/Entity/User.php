@@ -15,6 +15,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User implements UserInterface
 {
     /**
+     * @var Post
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Post", mappedBy="User")
+     */
+
+    /**
      * @var int
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -54,11 +59,7 @@ class User implements UserInterface
      */
     private $created;
 
-    /**
-     * @var \DateTime
-     * @ORM\Column(name="updated", type="datetime", nullable=true)
-     */
-    private $updated;
+
 
     /**
      * User constructor.
@@ -77,14 +78,6 @@ class User implements UserInterface
         $this->created = Carbon::now();
     }
 
-    /**
-     * @ORM\PreUpdate
-     * @return void
-     */
-    public function onPreUpdate(): void
-    {
-        $this->updated = Carbon::now();
-    }
 
     /**
      * @return int
@@ -198,11 +191,5 @@ class User implements UserInterface
         return $this->created;
     }
 
-    /**
-     * @return \DateTime|null
-     */
-    public function getUpdated(): ?\DateTime
-    {
-        return $this->updated;
-    }
+
 }

@@ -1,20 +1,7 @@
 <template>
     <div>
         <div class="row col">
-            <h1>Posts</h1>
-        </div>
-
-        <div class="row col" v-if="canCreatePost">
-            <form>
-                <div class="form-row">
-                    <div class="col-8">
-                        <input v-model="message" type="text" class="form-control">
-                    </div>
-                    <div class="col-4">
-                        <button @click="createPost()" :disabled="message.length === 0 || isLoading" type="button" class="btn btn-primary">Create</button>
-                    </div>
-                </div>
-            </form>
+            <h1>Liste des demandes</h1>
         </div>
 
         <div v-if="isLoading" class="row col">
@@ -26,11 +13,14 @@
         </div>
 
         <div v-else-if="!hasPosts" class="row col">
-            No posts!
+            Pas de demande
         </div>
 
         <div v-else v-for="post in posts" class="row col">
             <post :message="post.message"></post>
+            <post :message="post.created"></post>
+            <post :message="post.checked"></post>
+            <!-- <post/> -->
         </div>
     </div>
 </template>
@@ -40,7 +30,7 @@
     import ErrorMessage from '../components/ErrorMessage';
 
     export default {
-        name: 'posts',
+        name: 'Admin',
         components: {
             Post,
             ErrorMessage,
@@ -69,15 +59,9 @@
             posts () {
                 return this.$store.getters['post/posts'];
             },
-            canCreatePost () {
-                return this.$store.getters['security/hasRole']('ROLE_FOO');
-            }
         },
         methods: {
-            createPost () {
-                this.$store.dispatch('post/createPost', this.$data.message)
-                    .then(() => this.$data.message = '')
-            },
+
         },
     }
 </script>

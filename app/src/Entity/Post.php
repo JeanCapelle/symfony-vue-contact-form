@@ -12,6 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Post
 {
+    public function __construct()
+    {
+        $this->checked = 0;
+    }
+    
     /**
      * @var int
      * @ORM\Id
@@ -22,9 +27,15 @@ class Post
 
     /**
      * @var string
-     * @ORM\Column(name="string", type="string")
+     * @ORM\Column(name="message", type="string")
      */
     private $message;
+
+    /**
+     * @var string
+     * @ORM\Column(name="checked", type="boolean")
+     */
+    private $checked;
 
     /**
      * @var \DateTime
@@ -32,11 +43,6 @@ class Post
      */
     private $created;
 
-    /**
-     * @var \DateTime
-     * @ORM\Column(name="updated", type="datetime", nullable=true)
-     */
-    private $updated;
 
     /**
      * @ORM\PrePersist
@@ -89,11 +95,28 @@ class Post
         return $this->created;
     }
 
+
     /**
-     * @return \DateTime|null
-     */
-    public function getUpdated(): ?\DateTime
+     * Get the value of checked
+     *
+     * @return  string
+     */ 
+    public function getChecked()
     {
-        return $this->updated;
+        return $this->checked;
+    }
+
+    /**
+     * Set the value of checked
+     *
+     * @param  string  $checked
+     *
+     * @return  self
+     */ 
+    public function setChecked(string $checked)
+    {
+        $this->checked = $checked;
+
+        return $this;
     }
 }
