@@ -68,5 +68,12 @@ export default {
                 .then(res => commit('FETCHING_POSTS_SUCCESS', res.data))
                 .catch(err => commit('FETCHING_POSTS_ERROR', err));
         },
+
+        updateChecked( {commit}, userId){
+            commit('UPDATING_POST');
+            return PostAPI.checked(userId)
+                .then(res => commit('FETCHING_POSTS_SUCCESS', res.data))
+                .catch(err => commit('FETCHING_POSTS_ERROR', err));
+        }
     },
 }

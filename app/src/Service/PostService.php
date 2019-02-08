@@ -40,4 +40,21 @@ final class PostService
     {
         return $this->em->getRepository(Post::class)->findBy([], ['id' => 'DESC']);
     }
+
+
+    /**
+     * @return string[]post
+     */
+    public function validMessage($id):Post
+    {
+        $post = $this->em->getRepository(Post::class)->findOneBy([
+            'user' => $id,
+        ]);
+
+        $post->setChecked(true);
+        $this->em->persist($post);
+        $this->em->flush();
+        return $post;
+
+    }
 }

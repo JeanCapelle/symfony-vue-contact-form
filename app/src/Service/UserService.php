@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\User;
+use App\Entity\Post;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class UserService
@@ -19,15 +20,43 @@ final class UserService
         $this->em = $em;
     }
 
+    /** 
+     * @param Array $array
+     * @return boolean
+     */
+    public function validUser(Array $array)
+    {
+        $userMailDb = $this->em->getRepository(Post::class)->findOneBy([
+            'email' => $array['email'],
+        ]);
+        if( $userMailDb != null){
+            return false;
+        }
+        return true;
+    }
+
     /**
-     * @param String $string
+     * @param Array $array
      * @return User
      */
-    public function createUser(String $string): user
+    public function createUser(Array $array): user
     {
+        $object = (object) $array;
         $userEntity = new User();
-        $userEntity->setMessage($string);
+        $postEntity = new Post();
+
+        $userEntity->setFirstname($array['firstname']);
+        $userEntity->setLastname($array['lastname']);
+        $userEntity->setEmail($array['email']);
+        $userEntity->setLogin($array['email']);
+        $userEntity->setPhone($array['phone']);
+        $userEntity->setRoles(['ANONYMOUSLY']);
+
+        $postEntity->setMessage($array['message']);
+        $postEntity->setUser($userEntity);
+
         $this->em->persist($userEntity);
+        $this->em->persist($postEntity);
         $this->em->flush();
 
         return $userEntity;
@@ -40,4 +69,6 @@ final class UserService
     {
         return $this->em->getRepository(User::class)->findBy([], ['id' => 'DESC']);
     }
+
+
 }

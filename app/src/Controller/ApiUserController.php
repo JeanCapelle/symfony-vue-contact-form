@@ -41,7 +41,11 @@ final class ApiUserController extends AbstractController
     public function createAction(Request $request): JsonResponse
     {
         $user = $request->request->get('message');
-        $userEntity = $this->userService->createUser($message);
+        if (!$this->userService->validUser($user) ){
+            return new JsonResponse('email utilisé', 200, [], true);
+        }
+
+        $userEntity = $this->userService->createUser($user);
         $data = $this->serializer->serialize($userEntity, 'json');
 
         return new JsonResponse($data, 200, [], true);

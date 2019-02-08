@@ -9,8 +9,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\Serializer\SerializerInterface;
+use App\Entity\Post;
 
-// * @IsGranted("IS_AUTHENTICATED_FULLY")
 /**
  * Class ApiPostController
  * @package App\Controller
@@ -57,6 +57,21 @@ final class ApiPostController extends AbstractController
     {
         $postEntities = $this->postService->getAll();
         $data = $this->serializer->serialize($postEntities, 'json');
+
+        return new JsonResponse($data, 200, [], true);
+    }
+
+    /**
+     * @Rest\Put("/api/post/{id}", name="updatePost")
+     * @return JsonResponse
+     * @IsGranted("ROLE_FOO")
+     */
+    public function updateAction($id)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $postEntity = $this->postService->validMessage($id);
+
+        $data = $this->serializer->serialize($id, 'json');
 
         return new JsonResponse($data, 200, [], true);
     }

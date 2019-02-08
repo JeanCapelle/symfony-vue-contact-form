@@ -1,8 +1,11 @@
-Source code of the tutorial [thecodingmachine.io/building-a-single-page-application-with-symfony-4-and-vuejs](https://thecodingmachine.io/building-a-single-page-application-with-symfony-4-and-vuejs).
 
-# Quick start
+Vous êtes développeur chez ACSEO. Vous recevez une demande de la part d'un client pour la mise en place d'une nouvelle fonctionnalité sur son site Internet.
 
-If you want to try out the project just follow these steps.
+Nous souhaiterions mettre en place un formulaire de contact sur notre site. Le formulaire de contact doit être simple : il doit nous permettre de connaitre les coordonnées de l'internaute, et sa question. Il nous faut au moins son nom, son email, et sa question pour que nous traitions sa demande.
+
+Il nous faudrait aussi un petit back-office avec accès sécurisé pour permettre au webmaster de consulter la liste des demandes, et de pouvoir cocher les messages que nous avons traité
+
+Il vous est demandé de mettre en place la solution sur la base du Framework Symfony 3 ou 4.
 
 ### Start containers / project
 `docker-compose up`
@@ -15,9 +18,6 @@ If you want to try out the project just follow these steps.
 
 ### Install node modules
 `npm install`
-
-### Generate manifest
-`yarn dev`
 
 ### Generate database
 `php bin/console doctrine:migration:migrate`

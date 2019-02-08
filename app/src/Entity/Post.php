@@ -26,13 +26,18 @@ class Post
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="posts", cascade={"persist"})
+     */
+    private $user;
+
+    /**
      * @var string
      * @ORM\Column(name="message", type="string")
      */
     private $message;
 
     /**
-     * @var string
+     * @var boolean
      * @ORM\Column(name="checked", type="boolean")
      */
     private $checked;
@@ -96,10 +101,32 @@ class Post
     }
 
 
+
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
     /**
      * Get the value of checked
      *
-     * @return  string
+     * @return  boolean
      */ 
     public function getChecked()
     {
@@ -109,11 +136,11 @@ class Post
     /**
      * Set the value of checked
      *
-     * @param  string  $checked
+     * @param  boolean  $checked
      *
      * @return  self
      */ 
-    public function setChecked(string $checked)
+    public function setChecked( $checked)
     {
         $this->checked = $checked;
 

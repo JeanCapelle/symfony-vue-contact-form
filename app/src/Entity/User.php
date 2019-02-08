@@ -6,18 +6,20 @@ use Carbon\Carbon;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="user")
  * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity(
+  * fields={"email"},
+  * errorPath="email",
+  * message="It appears you have already registered with this email."
+  *)
  */
 class User implements UserInterface
 {
-    /**
-     * @var Post
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Post", mappedBy="User")
-     */
 
     /**
      * @var int
@@ -28,22 +30,19 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @var string
-     * @ORM\Column(name="login", type="string", unique=true)
-     * @Assert\NotBlank()
+     * @var string|null
+     * @ORM\Column(name="login", type="string", unique=true, nullable=true)
      */
     private $login;
 
     /**
      * @var string|null
-     * @Assert\NotBlank()
-     * @Assert\Length(max=4096)
      */
     private $plainPassword;
 
     /**
-     * @var string|null
-     * @ORM\Column(name="password", type="string")
+     * @var string
+     * @ORM\Column(name="password", type="string", nullable=true )
      */
     private $password;
 
@@ -59,6 +58,30 @@ class User implements UserInterface
      */
     private $created;
 
+    /**
+     * @var string
+     * @ORM\Column(name="firstname", type="string")
+     */
+    private $firstname;
+
+    /**
+     * @var string
+     * @ORM\Column(name="lastname", type="string")
+     */
+    private $lastname;
+    
+    /**
+     * @var string
+     * @ORM\Column(name="email", type="string", unique=true)
+     * @Assert\Email
+     */
+    private $email;
+
+    /**
+     * @var string
+     * @ORM\Column(name="phone", type="string")
+     */
+    private $phone;
 
 
     /**
@@ -191,5 +214,118 @@ class User implements UserInterface
         return $this->created;
     }
 
+
+
+    /**
+     * Get the value of firstname
+     *
+     * @return  string
+     */ 
+    public function getFirstname()
+    {
+        return $this->firstname;
+    }
+
+    /**
+     * Set the value of firstname
+     *
+     * @param  string  $firstname
+     *
+     * @return  self
+     */ 
+    public function setFirstname(string $firstname)
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+
+
+    /**
+     * Get the value of email
+     *
+     * @return  string
+     */ 
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set the value of email
+     *
+     * @param  string  $email
+     *
+     * @return  self
+     */ 
+    public function setEmail(string $email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of phone
+     *
+     * @return  string
+     */ 
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * Set the value of phone
+     *
+     * @param  string  $phone
+     *
+     * @return  self
+     */ 
+    public function setPhone(string $phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of lastname
+     *
+     * @return  string
+     */ 
+    public function getLastname()
+    {
+        return $this->lastname;
+    }
+
+    /**
+     * Set the value of lastname
+     *
+     * @param  string  $lastname
+     *
+     * @return  self
+     */ 
+    public function setLastname(string $lastname)
+    {
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        if (filter_var($this->getEmail(), FILTER_VALIDATE_EMAIL) == false ) {
+            $context->buildViolation('L\'email est invalide')
+                ->atPath('email')
+                ->addViolation();
+
+            return;
+        }
+    }
 
 }
