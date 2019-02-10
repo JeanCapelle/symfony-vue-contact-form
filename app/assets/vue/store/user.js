@@ -56,9 +56,10 @@ export default {
         },
     },
     actions: {
+        
         createUser ({commit}, user) {
             commit('CREATING_USER');
-            return UserAPI.create(user)
+            user =  UserAPI.create(user)
                 .then(res => commit('CREATING_USER_SUCCESS', res.data))
                 .catch(err => commit('CREATING_USER_ERROR', err));
         },

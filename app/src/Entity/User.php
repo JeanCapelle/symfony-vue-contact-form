@@ -15,7 +15,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity(
   * fields={"email"},
   * errorPath="email",
-  * message="It appears you have already registered with this email."
   *)
  */
 class User implements UserInterface
@@ -317,15 +316,16 @@ class User implements UserInterface
     /**
      * @Assert\Callback
      */
-    public function validate(ExecutionContextInterface $context)
-    {
-        if (filter_var($this->getEmail(), FILTER_VALIDATE_EMAIL) == false ) {
-            $context->buildViolation('L\'email est invalide')
-                ->atPath('email')
-                ->addViolation();
+    // public function validate(ExecutionContextInterface $context)
+    // {
+    //     if (filter_var($this->getEmail(), FILTER_VALIDATE_EMAIL) == false ) {
+    //         $context->buildViolation('L\'email est invalide')
+    //             ->atPath('email')
+    //             ->addViolation();
 
-            return;
-        }
-    }
+    //         return;
+    //     }
+    // }
 
 }
+

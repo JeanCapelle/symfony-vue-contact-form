@@ -59,7 +59,7 @@
                                 </div>
     
                                 <div class="text-center">
-                                    <button @click="createUser(), hidden = false" :disabled="form.message.length === 0 ||
+                                    <button @click="createUser()" :disabled="form.message.length === 0 ||
                              isLoading" type="button" class="btn btn-primary">Envoyer</button>
                                     <div  v-if="!hidden" class="p-3 mb-2 bg-success text-white">Demande envoyée</div>
                                 </div>
@@ -96,7 +96,10 @@ export default {
     },
     methods: {
         createUser() {
-            this.$store.dispatch('user/createUser', this.$data.form);
+            this.$store.dispatch('user/createUser', this.$data.form).
+            then(
+                () => console.log( this.hidden = false )
+            )
 
         },
     },

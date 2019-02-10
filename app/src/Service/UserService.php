@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Entity\Post;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class UserService
@@ -26,8 +27,8 @@ final class UserService
      */
     public function validUser(Array $array)
     {
-        $userMailDb = $this->em->getRepository(Post::class)->findOneBy([
-            'email' => $array['email'],
+        $userMailDb = $this->em->getRepository(User::class)->findOneBy([
+            'email' => $array['email']
         ]);
         if( $userMailDb != null){
             return false;
