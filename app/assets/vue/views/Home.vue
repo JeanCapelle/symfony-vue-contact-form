@@ -19,23 +19,23 @@
                                 <div class="form-group">
                                     <div class="input-group mb-2">
                                         <div class="input-group-prepend">
-                                            <div class="input-group-text"><i class="fa fa-user text-info"></i></div>
+                                            <div class="input-group-text"><i class="glyphicon glyphicon-star"></i></div>
                                         </div>
-                                        <input type="text" class="form-control" v-model="form.firstname" placeholder="Nom" required>
+                                        <input type="text" class="form-control" v-model="form.firstname" placeholder="Prénom" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="input-group mb-2">
                                         <div class="input-group-prepend">
-                                            <div class="input-group-text"><i class="fa fa-user text-info"></i></div>
+                                            <div class="input-group-text"><i class="glyphicon glyphicon-star"></i></div>
                                         </div>
-                                        <input type="text" class="form-control" v-model="form.lastname" placeholder="Prénom" required>
+                                        <input type="text" class="form-control" v-model="form.lastname" placeholder="Nom" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="input-group mb-2">
                                         <div class="input-group-prepend">
-                                            <div class="input-group-text"><i class="fa fa-user text-info"></i></div>
+                                            <div class="input-group-text"><i class="glyphicon glyphicon-star"></i></div>
                                         </div>
                                         <input type="text" class="form-control" v-model="form.phone" placeholder="Téléphone" required>
                                     </div>
@@ -43,7 +43,7 @@
                                 <div class="form-group">
                                     <div class="input-group mb-2">
                                         <div class="input-group-prepend">
-                                            <div class="input-group-text"><i class="fa fa-envelope text-info"></i></div>
+                                            <div class="input-group-text"><i class="glyphicon glyphicon-star"></i></div>
                                         </div>
                                         <input type="email" class="form-control" v-model="form.email" placeholder="Email" required>
                                     </div>
@@ -52,16 +52,20 @@
                                 <div class="form-group">
                                     <div class="input-group mb-2">
                                         <div class="input-group-prepend">
-                                            <div class="input-group-text"><i class="fa fa-comment text-info"></i></div>
+                                            <div class="input-group-text"><i class="glyphicon glyphicon-star"></i></div>
                                         </div>
                                         <textarea v-model="form.message" class="form-control" placeholder="votre question"></textarea>
                                     </div>
                                 </div>
     
                                 <div class="text-center">
-                                    <button @click="createUser()" :disabled="form.message.length === 0 ||
-                             isLoading" type="button" class="btn btn-primary">Envoyer</button>
-                                    <div  v-if="!hidden" class="p-3 mb-2 bg-success text-white">Demande envoyée</div>
+                                    <button @click="createUser()" 
+                                    :disabled="form.message.length === 0 || 
+                                    form.email.length === 0 ||
+                                    form.lastname.length === 0 ||
+                                 isLoading" type="button" class="btn btn-primary">Envoyer</button>
+                                    <div v-if="!hidden" class="p-3 mb-2 bg-success text-white">Demande envoyée 
+                                        <span v-if="emailUsed">{{arrayResponse[0] }}</span> </div>
                                 </div>
                             </div>
     
@@ -75,8 +79,6 @@
 </template>
 
 <script>
-import Post from '../components/Post';
-
 export default {
     name: 'home',
     components: {
@@ -91,15 +93,29 @@ export default {
                 email: '',
                 phone: '',
                 message: '',
-            }
+            },
+            user: this.$store.state.user,
+            arrayResponse:'',
+            emailUsed: false,
         };
+    },
+    computed: {
+        users(state) {
+            return state.users;
+        },
     },
     methods: {
         createUser() {
-            this.$store.dispatch('user/createUser', this.$data.form).
-            then(
-                () => console.log( this.hidden = false )
-            )
+            this.$store.dispatch('user/createUser', this.$data.form)
+                .then(() => {
+                    this.arrayResponse = this.user.users;
+                    this.hidden = false;
+                    if (this.arrayResponse[0]){
+                        if(this.arrayResponse[0] =='email utilisé'){
+                            this.emailUsed = true;
+                        }
+                    }
+                });
 
         },
     },

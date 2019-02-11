@@ -1,4 +1,5 @@
 import UserAPI from '../api/user';
+import axios from 'axios';
 
 export default {
     namespaced: true,
@@ -59,9 +60,16 @@ export default {
         
         createUser ({commit}, user) {
             commit('CREATING_USER');
-            user =  UserAPI.create(user)
-                .then(res => commit('CREATING_USER_SUCCESS', res.data))
-                .catch(err => commit('CREATING_USER_ERROR', err));
+            axios.post(
+                '/api/user/create',
+                { message: user }
+            )
+            .then(response => {
+              commit('CREATING_USER_SUCCESS',  response.data);
+            })
+            .catch(error => {
+              commit('CREATING_USER_ERROR', error.message);
+            });
         },
         fetchUsers ({commit}) {
             commit('FETCHING_USERS');

@@ -26,7 +26,6 @@
 
 <script>
 import Post from '../components/Post';
-// import User from '../components/User';
 import ErrorMessage from '../components/ErrorMessage';
 
 export default {
